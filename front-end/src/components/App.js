@@ -15,6 +15,7 @@ function App() {
         setStudent(student);
       }
     } catch (error) {
+      console.log(error.response)
       alert('Não foi possível realizar o sorteio!');
     }
   }, []);
