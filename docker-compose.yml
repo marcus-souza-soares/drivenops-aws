@@ -1,0 +1,46 @@
+services:
+  drivent_db:
+    image: postgres
+    container_name: drivent_db
+    restart: always
+    ports:
+      - 1235:5432
+    env_file:
+      - back-end/.env
+    volumes: 
+      - pg_drivent_db:/var/lib/postgresql/data
+
+  drivent_api:
+    container_name: drivent_api
+    build: ./back-end
+    image: drivent_node
+    ports:
+      - 5000:5000
+    depends_on:
+      - drivent_db
+    env_file:
+      - back-end/.env
+
+  react_build:
+    container_name: react_build
+    build: ./front-end
+    image: react_build_drivent
+    volumes:
+      - build_react:/var/www/html
+
+  nginx_drivent:
+    container_name: nginx_drivent
+    build: ./nginx
+    image: nginx_drivent
+    ports:
+      - 80:80
+    volumes:
+     - build_react:/var/www/html
+    depends_on:
+      - drivent_db
+      - drivent_api
+      - react_build
+
+volumes:
+  pg_drivent_db:
+  build_react:
