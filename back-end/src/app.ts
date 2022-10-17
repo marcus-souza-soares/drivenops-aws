@@ -10,7 +10,7 @@ app.get("/students", async (req: Request, res: Response) => {
   const students = await prisma.student.findMany();
   res.send(students);
 });
-
+//
 app.post("/students", async (req: Request, res: Response) => {
   const { students } = req.body;
   await prisma.student.createMany({
